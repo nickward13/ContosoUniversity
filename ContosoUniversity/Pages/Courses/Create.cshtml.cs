@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ContosoUniversity.Data;
 
-namespace ContosoUniversity.Pages.Students
+namespace ContosoUniversity.Pages.Courses
 {
     public class CreateModel : PageModel
     {
@@ -20,11 +20,12 @@ namespace ContosoUniversity.Pages.Students
 
         public IActionResult OnGet()
         {
+        ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID");
             return Page();
         }
 
         [BindProperty]
-        public Student Student { get; set; }
+        public Course Course { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -33,18 +34,10 @@ namespace ContosoUniversity.Pages.Students
                 return Page();
             }
 
-            var emptyStudent = new Student();
+            _context.Courses.Add(Course);
+            await _context.SaveChangesAsync();
 
-            if(await TryUpdateModelAsync<Student>(
-                emptyStudent,
-                "student",
-                s => s.FirstMidName, s=> s.LastName, s => s.EnrollmentDate))
-            {
-                _context.Student.Add(emptyStudent);
-                await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
-            }
-            return null;
+            return RedirectToPage("./Index");
         }
     }
 }

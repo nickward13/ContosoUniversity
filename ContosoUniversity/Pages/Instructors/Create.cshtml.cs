@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ContosoUniversity.Data;
 
-namespace ContosoUniversity.Pages.Students
+namespace ContosoUniversity.Pages.Instructors
 {
     public class CreateModel : PageModel
     {
@@ -24,7 +24,7 @@ namespace ContosoUniversity.Pages.Students
         }
 
         [BindProperty]
-        public Student Student { get; set; }
+        public Instructor Instructor { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -33,18 +33,10 @@ namespace ContosoUniversity.Pages.Students
                 return Page();
             }
 
-            var emptyStudent = new Student();
+            _context.Instructors.Add(Instructor);
+            await _context.SaveChangesAsync();
 
-            if(await TryUpdateModelAsync<Student>(
-                emptyStudent,
-                "student",
-                s => s.FirstMidName, s=> s.LastName, s => s.EnrollmentDate))
-            {
-                _context.Student.Add(emptyStudent);
-                await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
-            }
-            return null;
+            return RedirectToPage("./Index");
         }
     }
 }
