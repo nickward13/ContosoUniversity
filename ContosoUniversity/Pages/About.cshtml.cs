@@ -1,4 +1,4 @@
-﻿using ContosoUniversity.Data.SchoolViewModels;
+﻿using ContosoUniversity.Models.SchoolViewModels;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
